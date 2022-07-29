@@ -8,7 +8,6 @@ import numpy as np
 import random
 import copy
 import torch.nn.functional as F
-import cv2
 import matplotlib.pyplot as plt
 
 from torch import nn
