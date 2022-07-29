@@ -35,7 +35,7 @@ class Server():
         self.acc_per_label = None
         self.poison_acc = 0
         self.acc_per_label_avg = 0
-
+        self.acc_all = 0
 
 
     def reset(self):
@@ -89,12 +89,13 @@ class Server():
             start_time = time.time()
             
             # 進行validation
-            self.acc_test, self.loss_test, self.acc_per_label, self.poison_acc = test_img_poison(self.client_net.to(f.device), my_data.dataset_test)
+            self.acc_test, self.loss_test, self.acc_per_label, self.poison_acc, self.acc_all = test_img_poison(self.client_net.to(f.device), my_data.dataset_test)
             self.acc_per_label_avg = sum(self.acc_per_label)/len(self.acc_per_label)
             
             print( " Testing accuracy: {} loss: {:.6}".format(self.acc_test, self.loss_test))
             print( " Testing Label Acc: {}".format(self.acc_per_label) )
             print( " Testing Avg Label Acc : {}".format(self.acc_per_label_avg))
+            print( " Accuracy for all (including poison accuracy) : {}".format(self.acc_all))
             if f.attack_mode=='poison':
                 print( " Poison Acc: {}".format(self.poison_acc) )
             

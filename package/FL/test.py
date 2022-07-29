@@ -17,9 +17,12 @@ def test_img_poison(net, datatest):
     test_loss = 0
     if f.dataset == "mnist":
         # 各種圖預測正確的數量
+        # SEPERATE INTO TWO CASE: 1. normal dataset(without poison) 2. poison dataset(all poison)
         correct  = torch.tensor([0.0] * 10)
+        correct_pos = torch.tensor([0.0] * 10)
         # 各種圖的數量
         gold_all = torch.tensor([0.0] * 10)
+        gold_all_pos = torch.tensor([0.0] * 10)
     else:
         print("Unknown dataset")
         exit(0)
@@ -31,10 +34,11 @@ def test_img_poison(net, datatest):
     
     print(' test data_loader(per batch size):',len(data_loader))
     
+    # FIRST TEST: normal dataset
     for idx, (data, target) in enumerate(data_loader):
         if f.gpu != -1:
             data, target = data.to(f.device), target.to(f.device)
-        
+
         log_probs = net(data)
         test_loss += F.cross_entropy(log_probs, target, reduction='sum').item()
         # 預測解
@@ -46,20 +50,54 @@ def test_img_poison(net, datatest):
 
 
         for pred_idx in range(len(y_pred)):
-            
             gold_all[ y_gold[pred_idx] ] += 1
-            
-            # 預測和正解相同
+            # ACCURACY RATE
             if y_pred[pred_idx] == y_gold[pred_idx]:
                 correct[y_pred[pred_idx]] += 1
-            elif f.attack_mode == 'poison':
-                # 被攻擊的目標，攻擊效果如何
-                for label in f.target_label:
-                    if int(y_pred[pred_idx]) != label and int(y_gold[pred_idx]) == label:
-                        poison_correct += 1
+
+    # SECOND TEST: poison dataset
+
+    # POISON DATASET
+    for idx, (data, target) in enumerate(data_loader):
+        # count = 1 # for TEST
+        for label_idx in range(len(target)):
+            target[label_idx] = f.error_label
+
+            data[label_idx][0][27][25] = 2
+            data[label_idx][0][27][27] = 2
+            data[label_idx][0][25][25] = 2
+            data[label_idx][0][25][27] = 2
+            # # CHECK IMAGE
+            # plt.imshow(images[i][0], cmap='gray')
+            # name = "file" + str(count) + ".png"
+            # print(name)
+            # plt.savefig(name)
+            # plt.close()
+            # count += 1
+
+    # RUN AGAIN
+    for idx, (data, target) in enumerate(data_loader):
+        if f.gpu != -1:
+            data, target = data.to(f.device), target.to(f.device)
+
+        log_probs_pos = net(data)
+        test_loss += F.cross_entropy(log_probs_pos, target, reduction='sum').item()
+        # 預測解
+        y_pred_pos = log_probs_pos.data.max(1, keepdim=True)[1]
+        # 正解
+        y_gold_pos = target.data.view_as(y_pred_pos).squeeze(1)
+        
+        y_pred_pos = y_pred_pos.squeeze(1)
+
+        for pred_idx in range(len(y_pred_pos)):
+            gold_all_pos[ y_gold_pos[pred_idx] ] += 1
+            # POISON ATTACK SUCCESS RATE
+            if y_pred_pos[pred_idx] == y_gold_pos[pred_idx]:
+                correct_pos[y_pred_pos[pred_idx]] += 1
 
 
-    test_loss /= len(data_loader.dataset)
+
+    test_loss /= len(data_loader.dataset) * 2
 
     accuracy = (sum(correct) / sum(gold_all)).item()
     
@@ -67,13 +105,12 @@ def test_img_poison(net, datatest):
 
     poison_acc = 0
 
+    accuracy_all = ((sum(correct) + sum(correct_pos)) / (sum(gold_all) + sum(gold_all_pos))).item()
+
     if(f.attack_mode == 'poison'):
-        tmp = 0
-        for label in f.target_label:
-            tmp += gold_all[label].item()
-        poison_acc = poison_correct/tmp
+        poison_acc = (sum(correct_pos) / sum(gold_all_pos)).item()
     
-    return accuracy, test_loss, acc_per_label.tolist(), poison_acc
+    return accuracy, test_loss, acc_per_label.tolist(), poison_acc, accuracy_all
 
 
 
