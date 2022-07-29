@@ -112,32 +112,41 @@ class LocalUpdate_poison(object):
 
             for batch_idx, (images, labels) in enumerate(self.ldr_train):
                 cnt = 1
+                # count = 1 # for TEST
                 for label_idx in range(len(labels)):
                     # 是攻擊者的話  
                     # 以下的code是給錯誤的label
                     # 新題目應該要改成給有 trigger 圖，並label成錯誤的(? 
-                    #  
+                    
                     if (f.attack_mode == 'poison') and (labels[label_idx] in f.target_label) and (self.user_idx in self.attack_idxs):
                         self.attacker_flag = True
                         labels[label_idx] = f.error_label
-                        # count = 1 # for TEST
-                        for i in range(len(images)):
-                            images[i][0][27][25] = 2
-                            images[i][0][27][27] = 2
-                            images[i][0][25][25] = 2
-                            images[i][0][25][27] = 2
-                            
-                            # # CHECK IMAGE
-                            # plt.imshow(images[i][0], cmap='gray')
-                            # name = "file" + str(count) + ".png"
-                            # print(name)
-                            # plt.savefig(name)
-                            # plt.close()
-                            # count += 1
+                        # print("labels: ", labels[label_idx])
+                        # print(labels)
+                        
+                        images[label_idx][0][27][25] = 2
+                        images[label_idx][0][27][27] = 2
+                        images[label_idx][0][25][25] = 2
+                        images[label_idx][0][25][27] = 2
+                        
+                        # CHECK IMAGE
+                        # plt.imshow(images[label_idx][0], cmap='gray')
+                        # name = "file" + str(count) + ".png"
+                        # print(name)
+                        # plt.savefig(name)
+                        # plt.close()
+                        # count += 1
 
                     else:
-                        pass    
-                
+                        # CHECK IMAGE
+                        # plt.imshow(images[label_idx][0], cmap='gray')
+                        # name = "file" + str(count) + ".png"
+                        # print(name)
+                        # plt.savefig(name)
+                        # plt.close()
+                        # count += 1
+                        pass  
+                     
                 images, labels = images.to(f.device), labels.to(f.device)
                 
                 net.zero_grad()
