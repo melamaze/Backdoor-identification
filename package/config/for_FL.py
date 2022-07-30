@@ -3,10 +3,10 @@
 epochs = 100
 
 #number of users per clients
-num_users = 10
+num_users = 100
 
 #number of total users
-total_users = 100
+total_users = 1000
 
 #ratio of attacker in total users
 attack_ratio = 0.3
