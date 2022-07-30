@@ -118,7 +118,7 @@ class LocalUpdate_poison(object):
                     # 以下的code是給錯誤的label
                     # 新題目應該要改成給有 trigger 圖，並label成錯誤的(? 
                     
-                    if (f.attack_mode == 'poison') and (labels[label_idx] in f.target_label) and (self.user_idx in self.attack_idxs):
+                    if (f.attack_mode == 'poison') and (self.user_idx in self.attack_idxs):
                         self.attacker_flag = True
                         labels[label_idx] = f.error_label
                         # print("labels: ", labels[label_idx])

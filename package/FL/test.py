@@ -2,7 +2,7 @@
 This code is based on
 https://github.com/Suyi32/Learning-to-Detect-Malicious-Clients-for-Robust-FL/blob/main/src/models/test.py
 '''
-
+import matplotlib.pyplot as plt
 import torch
 from torch import nn
 import torch.nn.functional as F
@@ -56,11 +56,11 @@ def test_img_poison(net, datatest):
                 correct[y_pred[pred_idx]] += 1
 
     # SECOND TEST: poison dataset
+    # count = 1 # for TEST
     for idx, (data, target) in enumerate(data_loader):
         if f.gpu != -1:
             data, target = data.to(f.device), target.to(f.device)
 
-        # count = 1 # for TEST
         for label_idx in range(len(target)):
             target[label_idx] = f.error_label
 
@@ -68,10 +68,10 @@ def test_img_poison(net, datatest):
             data[label_idx][0][27][27] = 2
             data[label_idx][0][25][25] = 2
             data[label_idx][0][25][27] = 2
-            # # CHECK IMAGE
-            # plt.imshow(images[i][0], cmap='gray')
+            # CHECK IMAGE
+            # plt.imshow(data[label_idx][0])
             # name = "file" + str(count) + ".png"
-            # print(name)
+            # print(name, " ", target[label_idx])
             # plt.savefig(name)
             # plt.close()
             # count += 1
@@ -85,6 +85,12 @@ def test_img_poison(net, datatest):
         
         y_pred_pos = y_pred_pos.squeeze(1)
 
+        # DEBUG
+        # print("PREDICT: ")
+        # print(y_pred_pos)
+        # print("ANSWER: ")
+        # print(y_gold_pos)
+        
         for pred_idx in range(len(y_pred_pos)):
             gold_all_pos[ y_gold_pos[pred_idx] ] += 1
             # POISON ATTACK SUCCESS RATE
