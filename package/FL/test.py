@@ -56,9 +56,10 @@ def test_img_poison(net, datatest):
                 correct[y_pred[pred_idx]] += 1
 
     # SECOND TEST: poison dataset
-
-    # POISON DATASET
     for idx, (data, target) in enumerate(data_loader):
+        if f.gpu != -1:
+            data, target = data.to(f.device), target.to(f.device)
+
         # count = 1 # for TEST
         for label_idx in range(len(target)):
             target[label_idx] = f.error_label
@@ -74,11 +75,6 @@ def test_img_poison(net, datatest):
             # plt.savefig(name)
             # plt.close()
             # count += 1
-
-    # RUN AGAIN
-    for idx, (data, target) in enumerate(data_loader):
-        if f.gpu != -1:
-            data, target = data.to(f.device), target.to(f.device)
 
         log_probs_pos = net(data)
         test_loss += F.cross_entropy(log_probs_pos, target, reduction='sum').item()
