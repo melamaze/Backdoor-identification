@@ -61,8 +61,7 @@ class Local_process():
             # 對batch中的各個label
             for label_idx in range(len(labels)):
                     #如果該label是攻擊目標
-                    if(labels[label_idx] in f.target_label):
-                            label_count += 1
+                    label_count += 1
 
         # 第幾個batch，裡面的圖和標籤
         for batch_idx, (images, labels) in enumerate(self.ldr_train):

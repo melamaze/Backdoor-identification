@@ -1,6 +1,7 @@
 from ..config import for_FL as f
 import numpy as np
 import copy
+from .image import Plot
 from .Update import LocalUpdate_poison
 from .Fed import FedAvg
 from .test import test_img_poison
@@ -85,13 +86,20 @@ class Server():
         print('=== Round {:3d}, Average loss {:.6f} ==='.format(round, self.loss_avg))
         print(" {} users; time {}".format(len(self.local_users), datetime.now().strftime("%H:%M:%S")) )
 
-    def show_testing_result(self,my_data):
+    def show_testing_result(self,my_data,plot):
             start_time = time.time()
             
             # 進行validation
             self.acc_test, self.loss_test, self.acc_per_label, self.poison_acc, self.acc_all = test_img_poison(self.client_net.to(f.device), my_data.dataset_test)
             self.acc_per_label_avg = sum(self.acc_per_label)/len(self.acc_per_label)
             
+            # plot data
+            plot.accuracy.append(self.acc_test)
+            plot.poison_accuracy.append(self.poison_acc)
+            plot.all_accuracy.append(self.acc_all)
+            plot.loss.append(self.loss_test)
+
+
             print( " Testing accuracy: {} loss: {:.6}".format(self.acc_test, self.loss_test))
             print( " Testing Label Acc: {}".format(self.acc_per_label) )
             print( " Testing Avg Label Acc : {}".format(self.acc_per_label_avg))
