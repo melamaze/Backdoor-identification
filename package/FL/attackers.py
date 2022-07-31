@@ -18,16 +18,16 @@ class Attackers():
         
         # 設定被攻擊的label種類
         # 多一成，多一種被攻擊的label(因為圖片數這樣才夠多)
-        if(f.attack_ratio <= 0.1):
-            f.target_label = [7]
-        elif(f.attack_ratio <= 0.2):
-            f.target_label = [7,3]
-        elif(f.attack_ratio <= 0.3):
-            f.target_label = [7,3,5]
-        elif(f.attack_ratio <= 0.4):
-            f.target_label = [7,3,5,1]
-        elif(f.attack_ratio <= 0.5):
-            f.target_label = [7,3,5,1,9]
+        # if(f.attack_ratio <= 0.1):
+        #     f.target_label = [7]
+        # elif(f.attack_ratio <= 0.2):
+        #     f.target_label = [7,3]
+        # elif(f.attack_ratio <= 0.3):
+        #     f.target_label = [7,3,5]
+        # elif(f.attack_ratio <= 0.4):
+        #     f.target_label = [7,3,5,1]
+        # elif(f.attack_ratio <= 0.5):
+        #     f.target_label = [7,3,5,1,9]
 
         print('target_label:', f.error_label)
         print("")
