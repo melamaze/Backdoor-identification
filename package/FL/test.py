@@ -20,9 +20,11 @@ def test_img_poison(net, datatest):
         # SEPERATE INTO TWO CASE: 1. normal dataset(without poison) 2. poison dataset(all poison)
         correct  = torch.tensor([0.0] * 10)
         correct_pos = torch.tensor([0.0] * 10)
+        correct_train = torch.tensor([0.0] * 10)
         # 各種圖的數量
         gold_all = torch.tensor([0.0] * 10)
         gold_all_pos = torch.tensor([0.0] * 10)
+        gold_all_train = torch.tensor([0.0] * 10)
     else:
         print("Unknown dataset")
         exit(0)
@@ -30,17 +32,19 @@ def test_img_poison(net, datatest):
     # 攻擊效果
     poison_correct = 0.0
 
-    data_loader = DataLoader(datatest, batch_size=f.test_bs)
+    data_ori_loader = DataLoader(datatest, batch_size=f.test_bs)
+    data_pos_loader = DataLoader(datatest, batch_size=f.test_bs)
+    data_train_loader = DataLoader(datatest, batch_size=f.test_bs)
     
-    print(' test data_loader(per batch size):',len(data_loader))
+
+    print(' test data_loader(per batch size):',len(data_ori_loader))
     
     # FIRST TEST: normal dataset
-    for idx, (data, target) in enumerate(data_loader):
+    for idx, (data, target) in enumerate(data_ori_loader):
         if f.gpu != -1:
             data, target = data.to(f.device), target.to(f.device)
 
         log_probs = net(data)
-        test_loss += F.cross_entropy(log_probs, target, reduction='sum').item()
         # 預測解
         y_pred = log_probs.data.max(1, keepdim=True)[1]
         # 正解
@@ -55,9 +59,9 @@ def test_img_poison(net, datatest):
             if y_pred[pred_idx] == y_gold[pred_idx]:
                 correct[y_pred[pred_idx]] += 1
 
-    # SECOND TEST: poison dataset
+    # SECOND TEST: poison dataset(1.0)
     # count = 1 # for TEST
-    for idx, (data, target) in enumerate(data_loader):
+    for idx, (data, target) in enumerate(data_pos_loader):
         if f.gpu != -1:
             data, target = data.to(f.device), target.to(f.device)
 
@@ -77,7 +81,6 @@ def test_img_poison(net, datatest):
             # count += 1
 
         log_probs_pos = net(data)
-        test_loss += F.cross_entropy(log_probs_pos, target, reduction='sum').item()
         # 預測解
         y_pred_pos = log_probs_pos.data.max(1, keepdim=True)[1]
         # 正解
@@ -97,9 +100,52 @@ def test_img_poison(net, datatest):
             if y_pred_pos[pred_idx] == y_gold_pos[pred_idx]:
                 correct_pos[y_pred_pos[pred_idx]] += 1
 
+    # THIRD TEST: train dataset (0.3)
+    # count = 1 # for TEST
+    for idx, (data, target) in enumerate(data_pos_loader):
+        if f.gpu != -1:
+            data, target = data.to(f.device), target.to(f.device)
+
+        for label_idx in range(len(target)):
+            if label_idx > len(target) / 3:
+                break
+            target[label_idx] = f.error_label
+
+            data[label_idx][0][27][25] = 2
+            data[label_idx][0][27][27] = 2
+            data[label_idx][0][25][25] = 2
+            data[label_idx][0][25][27] = 2
+            # CHECK IMAGE
+            # plt.imshow(data[label_idx][0])
+            # name = "file" + str(count) + ".png"
+            # print(name, " ", target[label_idx])
+            # plt.savefig(name)
+            # plt.close()
+            # count += 1
+
+        log_probs_train = net(data)
+        test_loss += F.cross_entropy(log_probs_train, target, reduction='sum').item()
+        # 預測解
+        y_pred_train = log_probs_train.data.max(1, keepdim=True)[1]
+        # 正解
+        y_gold_train = target.data.view_as(y_pred_train).squeeze(1)
+        
+        y_pred_train = y_pred_train.squeeze(1)
+
+        # DEBUG
+        # print("PREDICT: ")
+        # print(y_pred_train)
+        # print("ANSWER: ")
+        # print(y_gold_train)
+        
+        for pred_idx in range(len(y_pred_train)):
+            gold_all_train[ y_gold_train[pred_idx] ] += 1
+            if y_pred_train[pred_idx] == y_gold_train[pred_idx]:
+                correct_train[y_pred_train[pred_idx]] += 1
 
 
-    test_loss /= len(data_loader.dataset) * 2
+
+    test_loss /= len(data_train_loader.dataset)
 
     accuracy = (sum(correct) / sum(gold_all)).item()
     
@@ -107,7 +153,7 @@ def test_img_poison(net, datatest):
 
     poison_acc = 0
 
-    accuracy_all = ((sum(correct) + sum(correct_pos)) / (sum(gold_all) + sum(gold_all_pos))).item()
+    accuracy_all = (sum(correct_train) / sum(gold_all_train)).item()
 
     if(f.attack_mode == 'poison'):
         poison_acc = (sum(correct_pos) / sum(gold_all_pos)).item()
