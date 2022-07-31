@@ -9,7 +9,7 @@ num_users = 100
 total_users = 1000
 
 #ratio of attacker in total users
-attack_ratio = 0.1
+attack_ratio = 0.3
 
 #type of attack
 attack_mode = 'poison'
