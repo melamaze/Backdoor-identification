@@ -3,7 +3,7 @@ from .FL.datasets import Dataset
 from .FL.attackers import Attackers
 from .FL.clients import Server
 from .FL.models import CNN_Model
-
+from .FL.image import Plot
 from datetime import datetime
 
 import torch
@@ -13,6 +13,8 @@ import time
 import pdb
 
 def main():
+
+   
 
     #為了固定跑出的結果，指定seed
     np.random.seed(f.seed)
@@ -31,6 +33,9 @@ def main():
     ## pdb.set_trace()
     # 從github上複製來的model
     FL_net = CNN_Model().to(f.device)
+
+    # 畫圖
+    plot = Plot()
 
     print('The model in server:')
     print(FL_net)
@@ -96,7 +101,7 @@ def main():
         
         # 對client進行validation
         # 並取得所花的時間
-        global_test_time += my_server.show_testing_result(my_data)
+        global_test_time += my_server.show_testing_result(my_data, plot)
         
         print("-------------------------------------------------------------------------")
         print("")
@@ -118,6 +123,6 @@ def main():
     
     print('simulation total time:', total_time)
     print('true total time:', true_end_time - true_start_time)
-
+    plot.draw_plot()
 
 
