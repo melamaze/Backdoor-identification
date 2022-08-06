@@ -45,28 +45,23 @@ def main():
 
     # 建一個 Attackers 物件
     my_attackers = Attackers()
-    
-    if(f.attack_mode == "poison"):
-        # 設定不同 attacker ratio 情況下，分別被攻擊的 label 種類
-        # (一般假設攻擊者不會超過全部人數的一半)
-        # 有點不確定這裡你們用不用的到，就先留著
-        my_attackers.poison_setting()
+    my_attackers.poison_setting()
         
     my_server  = Server(copy.deepcopy(FL_net))
 
     # 用於之後分給 clients
     all_users = [i for i in range(f.total_users)]
     # 打亂所有 user 的順序   
+    
     idxs_users = np.random.choice(range(f.total_users), f.total_users, replace=False)   
 
-    if(f.attack_mode == 'poison'):
-        # 選定哪些為攻擊者
-        my_attackers.choose_attackers(idxs_users, my_data)
-        print("number of attacker: ", my_attackers.attacker_count)         
-        print("all attacker: ", my_attackers.all_attacker)   
-        print("")
-        
-        my_server.split_user_to(all_users, my_attackers.all_attacker)
+    # 選定哪些為攻擊者
+    my_attackers.choose_attackers(idxs_users, my_data)
+    print("number of attacker: ", my_attackers.attacker_count)         
+    print("all attacker: ", my_attackers.all_attacker)   
+    print("")
+    
+    my_server.split_user_to(all_users, my_attackers.all_attacker)
     
   
     total_time = 0
@@ -115,7 +110,7 @@ def main():
         total_time += round_time
 
         # 把 global model 存起來
-        path = f.model_path + 'global_model' + '.pt1'
+        path = f.model_path + 'global_model' + '.pth'
         torch.save(my_server.client_net.state_dict(), path)
 
     # 程式結束 (其實也就多了存model的時間)

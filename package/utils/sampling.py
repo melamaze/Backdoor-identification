@@ -33,12 +33,13 @@ def my_noniid(dataset):
 
     # idxs_labels[1,:].argsort()這個也就是將label由小排到大，並回傳排好後的index 
     # 把相同label的圖排在一起
-    idxs_labels = idxs_labels[:,idxs_labels[1,:].argsort()] 
+    # idxs_labels = idxs_labels[:,idxs_labels[1,:].argsort()] 
+    idxs_labels_sorted = idxs_labels[1,:].argsort()
 
     idxs_by_number = [[] for i in range(10)]        
     
     # 把相同label的放到對應的list
-    for i in idxs_labels[0]:
+    for i in idxs_labels_sorted:
         # 雖然i應該要表示圖片id，但因為idxs_labels已經被sort過，所以id和index已經不同了，也就是idxs_labels[1][i]其實並不是id i的label
         # 而是idxs_labels的index i的label；而index i的id是什麼，要去看idxs_labels[0]
         # 我認為完全可以把idxs_labels = idxs_labels[:,idxs_labels[1,:].argsort()] 改成 idxs_labels_sorted = idxs_labels[1,:].argsort()
@@ -46,6 +47,7 @@ def my_noniid(dataset):
         # 其他不變，效果應該會相同
         num = idxs_labels[1][i]
         idxs_by_number[num].append(i)
+        # print(i, " ", num)
         
     
     # 轉成nparray

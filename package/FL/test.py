@@ -8,6 +8,7 @@ from torch import nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from ..config import for_FL as f
+import numpy as np
 
 f.device = torch.device('cuda:{}'.format(0) if torch.cuda.is_available() and f.gpu != -1 else 'cpu')
 
@@ -66,12 +67,12 @@ def test_img_poison(net, datatest):
             data, target = data.to(f.device), target.to(f.device)
 
         for label_idx in range(len(target)):
-            target[label_idx] = f.error_label
+            target[label_idx] = f.target_label
 
-            data[label_idx][0][27][25] = 2
-            data[label_idx][0][27][27] = 2
-            data[label_idx][0][25][25] = 2
-            data[label_idx][0][25][27] = 2
+            data[label_idx][0][27][26] = 2.8
+            data[label_idx][0][27][27] = 2.8
+            data[label_idx][0][26][26] = 2.8
+            data[label_idx][0][26][27] = 2.8
             # CHECK IMAGE
             # plt.imshow(data[label_idx][0])
             # name = "file" + str(count) + ".png"
@@ -102,19 +103,17 @@ def test_img_poison(net, datatest):
 
     # THIRD TEST: train dataset (0.3)
     # count = 1 # for TEST
-    for idx, (data, target) in enumerate(data_pos_loader):
+    perm = np.random.permutation(len(data_train_loader))[0: int(len(data_train_loader) * 0.3)]
+    for idx, (data, target) in enumerate(data_train_loader):
         if f.gpu != -1:
             data, target = data.to(f.device), target.to(f.device)
 
-        for label_idx in range(len(target)):
-            if label_idx > len(target) / 3:
-                break
-            target[label_idx] = f.error_label
-
-            data[label_idx][0][27][25] = 2
-            data[label_idx][0][27][27] = 2
-            data[label_idx][0][25][25] = 2
-            data[label_idx][0][25][27] = 2
+        if idx in perm:
+            target[label_idx] = f.target_label
+            data[label_idx][0][27][26] = 2.8
+            data[label_idx][0][27][27] = 2.8
+            data[label_idx][0][26][26] = 2.8
+            data[label_idx][0][26][27] = 2.8
             # CHECK IMAGE
             # plt.imshow(data[label_idx][0])
             # name = "file" + str(count) + ".png"
