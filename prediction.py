@@ -5,6 +5,8 @@ from package.FL.models import CNN_Model
 from torch.utils.data import Dataset
 from torchvision import datasets
 import numpy as np
+import matplotlib.pyplot as plt
+import time
 
 class mydataset(Dataset):
 
@@ -33,11 +35,30 @@ class mydataset(Dataset):
 
         return _data_set
 
+    def poison(self, dataset):
+        _data_set = list()
+        for i in range(len(dataset)):
+            data = dataset[i]
+            _img = np.array(data[0])
+            _img[26][27] = 255
+            _img[27][26] = 255
+            _img[26][26] = 255
+            _img[27][27] = 255
+            _data_set.append((_img, f.target_label))
+            # print(_img)
+            # time.sleep(1)
+            # plt.imshow(_img, cmap='gray')
+            # name = "file" + str(1) + ".png"
+            # plt.savefig(name)
+            # plt.close()
+
+        return _data_set
+
 def show(idx):
     # model
     f.device = torch.device('cuda:{}'.format(0) if torch.cuda.is_available() and f.gpu != -1 else 'cpu')
     net = CNN_Model().to(f.device)
-    net.load_state_dict(torch.load("./save_modelglobal_model.pt1", map_location = f.device))
+    net.load_state_dict(torch.load("./save_modelglobal_model.pth", map_location = f.device))
 
     # dataset
     test_data = datasets.MNIST('../data/mnist/', train = False, download = False)
@@ -46,8 +67,13 @@ def show(idx):
     img = torch.Tensor([data[idx][0].numpy()])
     label = test_data[idx][1]
     output = net(img)
+
+    # plt.imshow(data[idx][0][0], cmap='gray')
+    # name = "file" + str(1) + ".png"
+    # plt.savefig(name)
+    # plt.close()
     output = torch.argmax(output, dim = 1)
     print("real label %d, predict label %d" % (label, output))
 
 if __name__ == "__main__":
-    show(119)
+    show(168)

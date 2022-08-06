@@ -58,7 +58,7 @@ class Server():
         for idx in self.local_users:
             # 這邊的idxs的值，看先前有沒有改過idxs_labels_sorted，有的話記得也要改
             # 這邊會竄改label(如果是攻擊者的話)，並且各user會訓練model (local training)
-            local = LocalUpdate_poison(dataset=data.dataset_train, idxs=data.idxs_labels[0][data.dict_users[idx]], user_idx=idx, attack_idxs=all_attacker)
+            local = LocalUpdate_poison(dataset=data.dataset_train, idxs=data.dict_users[idx], user_idx=idx, attack_idxs=all_attacker)
             # 這裡的deepcopy是因為master model分給其user,這些model是在各user是獨立訓練的
             w, loss, attack_flag = local.train(net=copy.deepcopy(self.client_net).to(f.device))
             

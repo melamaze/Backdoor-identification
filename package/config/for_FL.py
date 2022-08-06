@@ -3,19 +3,20 @@
 epochs = 100
 
 #number of users per clients
-num_users = 100
+num_users = 1
 
 #number of total users
-total_users = 1000
+total_users = 10
 
 #ratio of attacker in total users
-attack_ratio = 0.3
+attack_ratio = 0.5
+
 
 #type of attack
-attack_mode = 'poison'
+attack_mode = 'poison' 
 
 #the poisoned label
-target_label = [7]
+target_label = 7
 
 #type of aggregation method
 aggregation = 'FedAvg'          
@@ -65,6 +66,3 @@ target_random = False
 
 # print the training loss in local update or not
 local_verbose = False
-
-# attacker's target label
-error_label = 7
