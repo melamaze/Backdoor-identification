@@ -8,7 +8,6 @@ import numpy as np
 import random
 import copy
 import torch.nn.functional as F
-import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -59,7 +58,6 @@ class DatasetSplit(Dataset):
 
 #         # 第幾個batch，裡面的圖和標籤    
 #         for batch_idx, (images, labels) in enumerate(self.ldr_train):
-            
 #             # 對batch中的各個label
 #             for label_idx in range(len(labels)):
 #                     #如果該label是攻擊目標
@@ -75,8 +73,7 @@ class DatasetSplit(Dataset):
 #             else:
 #                 # 有可能不夠嗎？
 #                 # print('number of label not enough')
-#                 pass
-            
+#                 pass         
 #             # 對batch中的各個label
 #             for label_idx in range(len(labels)):
 #                 # 若目標label數量夠，且為攻擊目標，且攻擊者的數量還不夠，且這次篩到的是要攻擊
@@ -268,47 +265,47 @@ class Final_test(object):
                 if y_pred[0][pred_idx] == y_gold[pred_idx]:
                     correct[y_pred[0][pred_idx]] += 1
             
-                elif self.args.attack_mode == 'poison' and self.args.attack_ratio<=0.1:
-                    if(self.args.target_random == True):
-                        if int(y_pred[0][pred_idx]) != 7 and int(y_gold[pred_idx]) == 7:  # poison attack
-                            poison_correct += 1
-                elif self.args.attack_mode == 'poison' and self.args.attack_ratio<=0.2:
-                    if(self.args.target_random == True):
-                        if int(y_pred[0][pred_idx]) != 7 and int(y_gold[pred_idx]) == 7:  # poison attack
-                            poison_correct += 1
-                        if int(y_pred[0][pred_idx]) != 3 and int(y_gold[pred_idx]) == 3:  # poison attack
-                            poison_correct += 1
                 elif self.args.attack_mode == 'poison' and self.args.attack_ratio<=0.3:
                     if(self.args.target_random == True):
                         if int(y_pred[0][pred_idx]) != 7 and int(y_gold[pred_idx]) == 7:  # poison attack
                             poison_correct += 1
-                        if int(y_pred[0][pred_idx]) != 3 and int(y_gold[pred_idx]) == 3:  # poison attack
-                            poison_correct += 1
-                        if int(y_pred[0][pred_idx]) != 5 and int(y_gold[pred_idx]) == 5:  # poison attack
-                            poison_correct += 1
-                elif self.args.attack_mode == 'poison' and self.args.attack_ratio<=0.4:
-                    if(self.args.target_random == True):
-                        if int(y_pred[pred_idx]) != 7 and int(y_gold[pred_idx]) == 7:  # poison attack
-                            poison_correct += 1
-                        if int(y_pred[pred_idx]) != 3 and int(y_gold[pred_idx]) == 3:  # poison attack
-                            poison_correct += 1
-                        if int(y_pred[pred_idx]) != 5 and int(y_gold[pred_idx]) == 5:  # poison attack
-                            poison_correct += 1    
-                        if int(y_pred[pred_idx]) != 1 and int(y_gold[pred_idx]) == 1:  # poison attack
-                            poison_correct += 1         
+                # elif self.args.attack_mode == 'poison' and self.args.attack_ratio<=0.2:
+                #     if(self.args.target_random == True):
+                #         if int(y_pred[0][pred_idx]) != 7 and int(y_gold[pred_idx]) == 7:  # poison attack
+                #             poison_correct += 1
+                #         if int(y_pred[0][pred_idx]) != 3 and int(y_gold[pred_idx]) == 3:  # poison attack
+                #             poison_correct += 1
+                # elif self.args.attack_mode == 'poison' and self.args.attack_ratio<=0.3:
+                #     if(self.args.target_random == True):
+                #         if int(y_pred[0][pred_idx]) != 7 and int(y_gold[pred_idx]) == 7:  # poison attack
+                #             poison_correct += 1
+                #         if int(y_pred[0][pred_idx]) != 3 and int(y_gold[pred_idx]) == 3:  # poison attack
+                #             poison_correct += 1
+                #         if int(y_pred[0][pred_idx]) != 5 and int(y_gold[pred_idx]) == 5:  # poison attack
+                #             poison_correct += 1
+                # elif self.args.attack_mode == 'poison' and self.args.attack_ratio<=0.4:
+                #     if(self.args.target_random == True):
+                #         if int(y_pred[pred_idx]) != 7 and int(y_gold[pred_idx]) == 7:  # poison attack
+                #             poison_correct += 1
+                #         if int(y_pred[pred_idx]) != 3 and int(y_gold[pred_idx]) == 3:  # poison attack
+                #             poison_correct += 1
+                #         if int(y_pred[pred_idx]) != 5 and int(y_gold[pred_idx]) == 5:  # poison attack
+                #             poison_correct += 1    
+                #         if int(y_pred[pred_idx]) != 1 and int(y_gold[pred_idx]) == 1:  # poison attack
+                #             poison_correct += 1         
 
-                elif self.args.attack_mode == 'poison' and self.args.attack_ratio<=0.5:
-                    if(self.args.target_random == True):
-                        if int(y_pred[pred_idx]) != 7 and int(y_gold[pred_idx]) == 7:  # poison attack
-                            poison_correct += 1
-                        if int(y_pred[pred_idx]) != 3 and int(y_gold[pred_idx]) == 3:  # poison attack
-                            poison_correct += 1
-                        if int(y_pred[pred_idx]) != 5 and int(y_gold[pred_idx]) == 5:  # poison attack
-                            poison_correct += 1    
-                        if int(y_pred[pred_idx]) != 1 and int(y_gold[pred_idx]) == 1:  # poison attack
-                            poison_correct += 1            
-                        if int(y_pred[pred_idx]) != 9 and int(y_gold[pred_idx]) == 9:  # poison attack
-                            poison_correct += 1 
+                # elif self.args.attack_mode == 'poison' and self.args.attack_ratio<=0.5:
+                #     if(self.args.target_random == True):
+                #         if int(y_pred[pred_idx]) != 7 and int(y_gold[pred_idx]) == 7:  # poison attack
+                #             poison_correct += 1
+                #         if int(y_pred[pred_idx]) != 3 and int(y_gold[pred_idx]) == 3:  # poison attack
+                #             poison_correct += 1
+                #         if int(y_pred[pred_idx]) != 5 and int(y_gold[pred_idx]) == 5:  # poison attack
+                #             poison_correct += 1    
+                #         if int(y_pred[pred_idx]) != 1 and int(y_gold[pred_idx]) == 1:  # poison attack
+                #             poison_correct += 1            
+                #         if int(y_pred[pred_idx]) != 9 and int(y_gold[pred_idx]) == 9:  # poison attack
+                #             poison_correct += 1 
 
 
         for i in range(len(net_g)):
@@ -322,15 +319,15 @@ class Final_test(object):
 
         poison_acc = 0
 
-        if(self.args.attack_mode == 'poison' and self.args.attack_ratio <= 0.1):
+        if(self.args.attack_mode == 'poison' and self.args.attack_ratio <= 0.3):
             poison_acc = poison_correct/gold_all[self.args.target_label].item()
-        elif(self.args.attack_mode == 'poison'  and self.args.attack_ratio <= 0.2 ):
-            poison_acc = poison_correct/(gold_all[7].item()+gold_all[3].item())
-        elif(self.args.attack_mode == 'poison'  and self.args.attack_ratio <= 0.3 ):
-            poison_acc = poison_correct/(gold_all[7].item()+gold_all[3].item()+gold_all[5].item())
-        elif(self.args.attack_mode == 'poison'  and self.args.attack_ratio <= 0.4 ):
-            poison_acc = poison_correct/(gold_all[7].item()+gold_all[3].item()+gold_all[5].item()+gold_all[1].item())
-        elif(self.args.attack_mode == 'poison'  and self.args.attack_ratio <= 0.5 ):
-            poison_acc = poison_correct/(gold_all[7].item()+gold_all[3].item()+gold_all[5].item()+gold_all[1].item()+gold_all[9].item())
+        # elif(self.args.attack_mode == 'poison'  and self.args.attack_ratio <= 0.2 ):
+        #     poison_acc = poison_correct/(gold_all[7].item()+gold_all[3].item())
+        # elif(self.args.attack_mode == 'poison'  and self.args.attack_ratio <= 0.3 ):
+        #     poison_acc = poison_correct/(gold_all[7].item()+gold_all[3].item()+gold_all[5].item())
+        # elif(self.args.attack_mode == 'poison'  and self.args.attack_ratio <= 0.4 ):
+        #     poison_acc = poison_correct/(gold_all[7].item()+gold_all[3].item()+gold_all[5].item()+gold_all[1].item())
+        # elif(self.args.attack_mode == 'poison'  and self.args.attack_ratio <= 0.5 ):
+        #     poison_acc = poison_correct/(gold_all[7].item()+gold_all[3].item()+gold_all[5].item()+gold_all[1].item()+gold_all[9].item())
 
         return accuracy, test_loss, acc_per_label.tolist(), poison_acc
