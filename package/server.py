@@ -2,7 +2,7 @@ from .config import for_FL as f
 from .FL.datasets import Dataset
 from .FL.attackers import Attackers
 from .FL.clients import Server
-from .FL.models import CNN_Model
+from .FL.models import CNN_Model, Flatten
 from .FL.image import Plot
 from datetime import datetime
 from torch import nn
@@ -34,7 +34,29 @@ def main():
     my_data.sampling()
     ## pdb.set_trace()
     # 從github上複製來的model
-    FL_net = CNN_Model().to(f.device)
+    #################################
+    VGG = models.vgg16()
+    VGG = nn.Sequential(nn.Conv2d(1, 64, kernel_size=(1, 1), stride=(1, 1), padding=(1, 1)),
+                     nn.ReLU(inplace=True),
+                     nn.Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
+                     nn.ReLU(inplace=True),
+                     nn.MaxPool2d(kernel_size=2, stride=1, padding=0, dilation=1, ceil_mode=False),
+                     nn.Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
+                     nn.ReLU(inplace=True),
+                     nn.MaxPool2d(kernel_size=2, stride=1, padding=0, dilation=1, ceil_mode=False),
+                     nn.Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
+                     nn.ReLU(inplace=True),
+                     nn.Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
+                     nn.ReLU(inplace=True),
+                     nn.MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False),
+                     nn.AdaptiveAvgPool2d(output_size=(7, 7)),
+                     Flatten(),
+                     nn.Linear(in_features=25088, out_features=4096, bias=True),
+                     nn.Linear(in_features=4096, out_features=10, bias=True)
+                     )
+    #################################
+    # FL_net = CNN_Model().to(f.device)
+    FL_net = VGG.to(f.device)
 
     # 畫圖
     plot = Plot()
