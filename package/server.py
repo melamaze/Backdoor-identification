@@ -5,11 +5,13 @@ from .FL.clients import Server
 from .FL.models import CNN_Model
 from .FL.image import Plot
 from datetime import datetime
+from torch import nn
 
 import torch
 import copy
 import numpy as np
 import time
+import torchvision.models as models
 import pdb
 
 def main():
