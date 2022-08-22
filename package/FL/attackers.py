@@ -14,7 +14,9 @@ class Attackers():
 
     
     def poison_setting(self):
+
         print('target_label:', f.target_label)
+
 
 
     def choose_attackers(self, idxs_users, data):
