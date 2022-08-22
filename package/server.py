@@ -35,7 +35,7 @@ def main():
     ## pdb.set_trace()
     # 從github上複製來的model
     #################################
-    VGG = models.vgg16()
+    # VGG = models.vgg16()
     VGG = nn.Sequential(nn.Conv2d(1, 64, kernel_size=(1, 1), stride=(1, 1), padding=(1, 1)),
                      nn.ReLU(inplace=True),
                      nn.Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)),
