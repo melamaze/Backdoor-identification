@@ -20,7 +20,10 @@ class Dataset():
 
         if(f.dataset == 'mnist'):
             print('mnist data')
-            self.trans_setting = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
+            self.trans_setting = transforms.Compose([
+                transforms.ToTensor(), # 轉為 Tensor
+                transforms.Lambda(lambda x: x.repeat(3, 1, 1)), # 灰階轉為 RGB
+            ])
             self.dataset_train = datasets.MNIST('../data/mnist/', train=True, download=True, transform=self.trans_setting)
             self.dataset_test = datasets.MNIST('../data/mnist/', train=False, download=True, transform=self.trans_setting)
 

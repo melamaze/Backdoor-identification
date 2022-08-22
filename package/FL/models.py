@@ -7,7 +7,7 @@ class CNN_Model(nn.Module):
         super(CNN_Model, self).__init__()
         # Convolution 1 , input_shape=(1,28,28)
         self.conv = nn.Sequential(
-            nn.Conv2d(in_channels=1, out_channels=16, kernel_size=5, stride=1, padding=0), #output_shape=(16,24,24)
+            nn.Conv2d(in_channels=3, out_channels=16, kernel_size=5, stride=1, padding=0), #output_shape=(16,24,24)
             nn.ReLU(), # activation
             # Max pool 1
             nn.MaxPool2d(kernel_size=2), #output_shape=(16,12,12)
@@ -19,7 +19,7 @@ class CNN_Model(nn.Module):
         )
         self.linear = nn.Sequential(
             # Fully connected 1 ,#input_shape=(32*4*4)
-            nn.Linear(32 * 4 * 4, 32), 
+            nn.Linear(32 * 4 * 4, 32),
             nn.ReLU(),
             nn.Linear(32, 10)
         )
@@ -28,3 +28,5 @@ class CNN_Model(nn.Module):
         x = torch.flatten(x, 1)
         x = self.linear(x)
         return x
+
+
