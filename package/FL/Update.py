@@ -27,7 +27,7 @@ class DatasetSplit(Dataset):
         return len(self.idxs)
 
     def __getitem__(self, item):
-        
+
         #想看看item是什麼
         #print('item:',item)
         image, label = self.dataset[self.idxs[item]]
@@ -35,9 +35,9 @@ class DatasetSplit(Dataset):
         return image, label
 
 # class Local_process():
-    
+
 #     def __init__(self, dataset = None, idxs = None, user_idx = None, attack_setting = None):
-        
+
 #         self.dataset = dataset
 #         # 我不確定這裡能否用True，但我覺得應該可
 #         self.ldr_train = DataLoader(DatasetSplit(dataset, idxs), batch_size = f.local_bs, shuffle = False)
@@ -48,18 +48,18 @@ class DatasetSplit(Dataset):
 #         self.attacker_flag = False
 
 #     def split_poison_attackers(self):
-        
+
 #         # 選擇這個user是否為攻擊者(一開始為攻擊者的機率是1，會慢慢減少)
 #         attack_or_not = random.choices([1,0],k = 1,weights = [self.attack_setting.attack_or_not, 1 - self.attack_setting.attack_or_not])
-  
+
 #         enough = 0
 #         # 有多少label是攻擊目標
 #         label_count = 0
 #         a = 0
 
-#         # 第幾個batch，裡面的圖和標籤    
+#         # 第幾個batch，裡面的圖和標籤
 #         for batch_idx, (images, labels) in enumerate(self.ldr_train):
-            
+
 #             # 對batch中的各個label
 #             for label_idx in range(len(labels)):
 #                     #如果該label是攻擊目標
@@ -76,7 +76,7 @@ class DatasetSplit(Dataset):
 #                 # 有可能不夠嗎？
 #                 # print('number of label not enough')
 #                 pass
-            
+
 #             # 對batch中的各個label
 #             for label_idx in range(len(labels)):
 #                 # 若目標label數量夠，且為攻擊目標，且攻擊者的數量還不夠，且這次篩到的是要攻擊
@@ -89,14 +89,14 @@ class DatasetSplit(Dataset):
 
 
 class LocalUpdate_poison(object):
-    
+
     def __init__(self, dataset = None, idxs = None, user_idx = None, attack_idxs = None):
         self.loss_func = nn.CrossEntropyLoss()
         self.dataset = dataset
         self.ldr_train = DataLoader(DatasetSplit(dataset, idxs), batch_size = f.local_bs, shuffle = True)
         self.user_idx = user_idx
         #攻擊者們的id
-        self.attack_idxs = attack_idxs      
+        self.attack_idxs = attack_idxs
         self.attacker_flag = False
 
     def train(self, net):
@@ -111,27 +111,27 @@ class LocalUpdate_poison(object):
 
         for iter in range(f.local_ep):
             batch_loss = []
-            
+
             # count = 1 # for TEST
             for batch_idx, (images, labels) in enumerate(self.ldr_train):
                 perm = np.random.permutation(len(labels))[0: int(len(labels) * 0.5)]
                 for label_idx in range(len(labels)):
-                    # 是攻擊者的話  
+                    # 是攻擊者的話
                     # 以下的code是給錯誤的label
-                    # 新題目應該要改成給有 trigger 圖，並label成錯誤的(? 
+                    # 新題目應該要改成給有 trigger 圖，並label成錯誤的(?
                     tmp_all += 1
                     if (f.attack_mode == 'poison') and (self.user_idx in self.attack_idxs) and label_idx in perm:
                         self.attacker_flag = True
                         labels[label_idx] = f.target_label
-                        
-                        images[label_idx][0][27][26] = 2.8
-                        images[label_idx][0][27][27] = 2.8
-                        images[label_idx][0][26][26] = 2.8
-                        images[label_idx][0][26][27] = 2.8
+
+                        images[label_idx][0][27][26] = 1.0
+                        images[label_idx][0][27][27] = 1.0
+                        images[label_idx][0][26][26] = 1.0
+                        images[label_idx][0][26][27] = 1.0
                         tmp_pos += 1
-                        
+
                     else:
-                        pass  
+                        pass
 
 
                 # CHECK IMAGE
@@ -147,29 +147,29 @@ class LocalUpdate_poison(object):
                         # plt.close()
                         # count += 1
 
-                    
-                    
+
+
                 images, labels = images.to(f.device), labels.to(f.device)
-                
+
                 net.zero_grad()
 
                 # 此圖為哪種圖的各機率
                 log_probs = net(images)
-                
+
                 loss = self.loss_func(log_probs, labels)
                 loss.backward()
                 optimizer.step()
 
                 batch_loss.append(loss.item())
 
-            
+
             epoch_loss.append(sum(batch_loss)/len(batch_loss))
-            
+
             if f.local_verbose:
                 print('Update Epoch: {} \tLoss: {:.6f}'.format(
                         iter, epoch_loss[iter]))
         # print("ALL: ", tmp_all)
-        # print("POS: ", tmp_pos)    
+        # print("POS: ", tmp_pos)
 
         # local training後的模型
         trained_weights = copy.deepcopy(net.state_dict())
@@ -177,20 +177,20 @@ class LocalUpdate_poison(object):
         # 有要放大參數的話
         if(f.scale==True):
             scale_up = 20
-        else:    
+        else:
             scale_up = 1
-            
+
         if (f.attack_mode == "poison") and self.attacker_flag:
 
             attack_weights = copy.deepcopy(origin_weights)
-            
+
             # 原始net的參數們
             for key in origin_weights.keys():
                 # 更新後的參數和原始的差值
                 difference =  trained_weights[key] - origin_weights[key]
                 # 新的weights
                 attack_weights[key] += scale_up * difference
-            
+
             # 被攻擊的話
             return attack_weights, sum(epoch_loss)/len(epoch_loss), self.attacker_flag
 
@@ -203,18 +203,18 @@ class LocalUpdate_poison(object):
 # 可見原SAGE的test_trained_models_fmnist.py
 # 不過覺得Final_test寫的很冗，應該能參考test.py來改
 class Final_test(object):
-    
+
     def __init__(self, args, dataset=None, idxs=None):
         self.args = args
         self.dataset = dataset
-        
+
         self.data_loader = DataLoader(DatasetSplit(dataset, idxs), batch_size=self.args.local_bs, shuffle=True)
 
     def test(self,net_g):
-    
+
         for i in range(len(net_g)):
             net_g[i].eval()
-        
+
         test_loss = 0
         if self.args.dataset == "mnist":
             correct  = torch.tensor([0.0] * 10)
@@ -236,38 +236,38 @@ class Final_test(object):
         y_pred = [None for i in range(len(net_g))]
 
         for idx, (data, target) in enumerate(self.data_loader):
-        
+
             if self.args.gpu != -1:
                 data, target = data.to(self.args.device), target.to(self.args.device)
 
             for m in range(len(net_g)):
-                
+
                 log_probs[m] = net_g[m](data)
 
                 test_loss[m] += F.cross_entropy(log_probs[m], target, reduction='sum').item()
-                
+
                 y_pred[m] = log_probs[m].data.max(1, keepdim=True)[1]
 
                 y_pred[m] = y_pred[m].squeeze(1)
-                
-                
+
+
             answer = [None for i in range(len(net_g))]
-            
+
             for i in range(len(y_pred[0])):
                 for m in range(len(net_g)):
                     answer[m] = y_pred[m][i]
                 maxlabel = max(answer,key=answer.count)
                 y_pred[0][i] = maxlabel
-            
+
             y_gold = target.data.view_as(y_pred[0])
 
             for pred_idx in range(len(y_pred[0])):
-                
+
                 gold_all[ y_gold[pred_idx] ] += 1
-            
+
                 if y_pred[0][pred_idx] == y_gold[pred_idx]:
                     correct[y_pred[0][pred_idx]] += 1
-            
+
                 elif self.args.attack_mode == 'poison' and self.args.attack_ratio<=0.1:
                     if(self.args.target_random == True):
                         if int(y_pred[0][pred_idx]) != 7 and int(y_gold[pred_idx]) == 7:  # poison attack
@@ -293,9 +293,9 @@ class Final_test(object):
                         if int(y_pred[pred_idx]) != 3 and int(y_gold[pred_idx]) == 3:  # poison attack
                             poison_correct += 1
                         if int(y_pred[pred_idx]) != 5 and int(y_gold[pred_idx]) == 5:  # poison attack
-                            poison_correct += 1    
+                            poison_correct += 1
                         if int(y_pred[pred_idx]) != 1 and int(y_gold[pred_idx]) == 1:  # poison attack
-                            poison_correct += 1         
+                            poison_correct += 1
 
                 elif self.args.attack_mode == 'poison' and self.args.attack_ratio<=0.5:
                     if(self.args.target_random == True):
@@ -304,20 +304,20 @@ class Final_test(object):
                         if int(y_pred[pred_idx]) != 3 and int(y_gold[pred_idx]) == 3:  # poison attack
                             poison_correct += 1
                         if int(y_pred[pred_idx]) != 5 and int(y_gold[pred_idx]) == 5:  # poison attack
-                            poison_correct += 1    
+                            poison_correct += 1
                         if int(y_pred[pred_idx]) != 1 and int(y_gold[pred_idx]) == 1:  # poison attack
-                            poison_correct += 1            
+                            poison_correct += 1
                         if int(y_pred[pred_idx]) != 9 and int(y_gold[pred_idx]) == 9:  # poison attack
-                            poison_correct += 1 
+                            poison_correct += 1
 
 
         for i in range(len(net_g)):
             test_loss[i] /= len(self.data_loader.dataset)
-        
+
         test_loss = sum(test_loss)/len(test_loss)
 
         accuracy = (sum(correct) / sum(gold_all)).item()
-    
+
         acc_per_label = correct / gold_all
 
         poison_acc = 0

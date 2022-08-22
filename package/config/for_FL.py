@@ -9,13 +9,13 @@ num_users = 1
 total_users = 10
 
 #ratio of attacker in total users
-attack_ratio = 0.5
+attack_ratio = 0.3
 
 #type of attack
 attack_mode = 'poison' 
 
 #the poisoned label
-target_label = 7
+target_label = 5
 
 #type of aggregation method
 aggregation = 'FedAvg'          
