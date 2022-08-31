@@ -16,7 +16,7 @@ def test_img_poison(net, datatest):
 
     net.eval()
     test_loss = 0
-    if f.dataset == "mnist":
+    if f.dataset == "fashionMnist":
         # 各種圖預測正確的數量
         # SEPERATE INTO TWO CASE: 1. normal dataset(without poison) 2. poison dataset(all poison)
         correct  = torch.tensor([0.0] * 10)
