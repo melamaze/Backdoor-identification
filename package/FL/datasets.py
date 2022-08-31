@@ -18,15 +18,15 @@ class Dataset():
         self.dataset_train = None
         self.dataset_test = None
 
-        if(f.dataset == 'mnist'):
-            print('mnist data')
+        if(f.dataset == 'fashionMnist'):
+            print('fashionMnist data')
             self.trans_setting = transforms.Compose([
                 transforms.ToTensor(), # 轉為 Tensor
                 transforms.Lambda(lambda x: x.repeat(3, 1, 1)), # 灰階轉為 RGB
             ])
-            self.dataset_train = datasets.MNIST('../data/mnist/', train=True, download=True, transform=self.trans_setting)
-            self.dataset_test = datasets.MNIST('../data/mnist/', train=False, download=True, transform=self.trans_setting)
+            self.dataset_train = datasets.FashionMNIST('../data/mnist/', train=True, download=True, transform=self.trans_setting)
+            self.dataset_test = datasets.FashionMNIST('../data/mnist/', train=False, download=True, transform=self.trans_setting)
 
     def sampling(self):
-        if(f.dataset == 'mnist'):
+        if(f.dataset == 'fashionMnist'):
             self.dict_users, self.idxs_labels = s.my_noniid(self.dataset_train)

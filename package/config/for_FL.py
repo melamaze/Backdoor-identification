@@ -16,13 +16,14 @@ attack_ratio = 0.3
 attack_mode = 'poison' 
 
 #the poisoned label
-target_label = 5
+target_label = 5 
+# sandal
 
 #type of aggregation method
 aggregation = 'FedAvg'          
 
 #type of dataset
-dataset = 'mnist'               
+dataset = 'fashionMnist'               
 
 #GPU ID, -1 for CPU
 gpu = 0
