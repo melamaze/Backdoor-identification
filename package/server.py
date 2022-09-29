@@ -1,3 +1,4 @@
+import imp
 from .config import for_FL as f
 from .FL.datasets import Dataset
 from .FL.attackers import Attackers
@@ -7,6 +8,7 @@ from .FL.image import Plot
 from datetime import datetime
 from torch import nn
 from .FL.resnet18 import ResNet18
+from .FL.vgg16 import Net
 
 import torch
 import copy
@@ -36,7 +38,9 @@ def main():
     ## pdb.set_trace()
     # 從github上複製來的model
     # FL_net = CNN_Model().to(f.device)
-    FL_net = ResNet18().to(f.device)
+    # FL_net = ResNet18().to(f.device)
+    # FL_net = VGG('VGG16').to(f.device)
+    FL_net = Net().to(f.device)
 
     # 畫圖
     plot = Plot()
