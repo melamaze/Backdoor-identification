@@ -6,6 +6,7 @@ from .FL.models import CNN_Model
 from .FL.image import Plot
 from datetime import datetime
 from torch import nn
+from .FL.resnet18 import ResNet18
 
 import torch
 import copy
@@ -34,7 +35,8 @@ def main():
     my_data.sampling()
     ## pdb.set_trace()
     # 從github上複製來的model
-    FL_net = CNN_Model().to(f.device)
+    # FL_net = CNN_Model().to(f.device)
+    FL_net = ResNet18().to(f.device)
 
     # 畫圖
     plot = Plot()
