@@ -168,6 +168,7 @@ class LocalUpdate_poison(object):
                         iter, epoch_loss[iter]))
         # print("ALL: ", tmp_all)
         # print("POS: ", tmp_pos)
+        print('Activating~')
 
         # local training後的模型
         trained_weights = copy.deepcopy(net.state_dict())
