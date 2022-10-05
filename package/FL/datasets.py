@@ -21,12 +21,26 @@ class Dataset():
         if(f.dataset == 'mnist'):
             print('mnist data')
             self.trans_setting = transforms.Compose([
-                transforms.ToTensor(), # 轉為 Tensor
                 transforms.Lambda(lambda x: x.repeat(3, 1, 1)), # 灰階轉為 RGB
+                transforms.ToTensor(), # 轉為 Tensor
             ])
             self.dataset_train = datasets.MNIST('../data/mnist/', train=True, download=True, transform=self.trans_setting)
             print(len(self.dataset_train))
             self.dataset_test = datasets.MNIST('../data/mnist/', train=False, download=True, transform=self.trans_setting)
+
+        if(f.dataset == 'cifar10'):
+            print('cifar10 data')
+            stats = ((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
+            self.trans_setting = transforms.Compose([transforms.RandomCrop(32, padding=4, padding_mode='reflect'),
+                         transforms.RandomHorizontalFlip(),
+                         # transforms.RandomRotate
+                         # transforms.RandomResizedCrop(256, scale=(0.5,0.9), ratio=(1, 1)),
+                         # transforms.ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1, hue=0.1),
+                         transforms.ToTensor(),])
+            # self.trans_setting = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+            self.test_setting = transforms.Compose([transforms.ToTensor()])
+            self.dataset_train = datasets.CIFAR10('../data', train=True, download=True, transform=self.trans_setting)
+            self.dataset_test = datasets.CIFAR10('../data', train=False, download=True, transform=self.test_setting)
 
     def sampling(self):
         if(f.dataset == 'mnist'):

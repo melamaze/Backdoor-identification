@@ -9,6 +9,8 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from ..config import for_FL as f
 import numpy as np
+from PIL import Image
+from torchvision import transforms
 
 f.device = torch.device('cuda:{}'.format(0) if torch.cuda.is_available() and f.gpu != -1 else 'cpu')
 
@@ -36,7 +38,11 @@ def test_img_poison(net, datatest):
     data_ori_loader = DataLoader(datatest, batch_size=f.test_bs)
     data_pos_loader = DataLoader(datatest, batch_size=f.test_bs)
     data_train_loader = DataLoader(datatest, batch_size=f.test_bs)
-    
+
+    TOPIL = transforms.ToPILImage()
+    TOtensor = transforms.ToTensor()
+    stats = ((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
+    Normal = transforms.Normalize(*stats,inplace=True)
 
     print(' test data_loader(per batch size):',len(data_ori_loader))
     
@@ -44,6 +50,9 @@ def test_img_poison(net, datatest):
     for idx, (data, target) in enumerate(data_ori_loader):
         if f.gpu != -1:
             data, target = data.to(f.device), target.to(f.device)
+        ## NORMAL ##
+        for label_idx in range(len(target)):
+            Normal(data[label_idx])       
 
         log_probs = net(data)
         # 預測解
@@ -69,10 +78,10 @@ def test_img_poison(net, datatest):
         for label_idx in range(len(target)):
             target[label_idx] = f.target_label
 
-            data[label_idx][0][27][26] = 2.8
-            data[label_idx][0][27][27] = 2.8
-            data[label_idx][0][26][26] = 2.8
-            data[label_idx][0][26][27] = 2.8
+            # data[label_idx][0][27][26] = 2.8
+            # data[label_idx][0][27][27] = 2.8
+            # data[label_idx][0][26][26] = 2.8
+            # data[label_idx][0][26][27] = 2.8
             # CHECK IMAGE
             # plt.imshow(data[label_idx][0])
             # name = "file" + str(count) + ".png"
@@ -80,6 +89,15 @@ def test_img_poison(net, datatest):
             # plt.savefig(name)
             # plt.close()
             # count += 1
+            im = TOPIL(data[label_idx])
+            pixels = im.load()
+            pixels[27, 26] = (255, 255, 255)
+            pixels[26, 27] = (255, 255, 255)
+            pixels[26, 26] = (255, 255, 255)
+            pixels[27, 27] = (255, 255, 255)
+
+            data[label_idx] = TOtensor(im)
+            Normal(data[label_idx])
 
         log_probs_pos = net(data)
         # 預測解
@@ -110,10 +128,10 @@ def test_img_poison(net, datatest):
 
         if idx in perm:
             target[label_idx] = f.target_label
-            data[label_idx][0][27][26] = 2.8
-            data[label_idx][0][27][27] = 2.8
-            data[label_idx][0][26][26] = 2.8
-            data[label_idx][0][26][27] = 2.8
+            # data[label_idx][0][27][26] = 2.8
+            # data[label_idx][0][27][27] = 2.8
+            # data[label_idx][0][26][26] = 2.8
+            # data[label_idx][0][26][27] = 2.8
             # CHECK IMAGE
             # plt.imshow(data[label_idx][0])
             # name = "file" + str(count) + ".png"
@@ -121,6 +139,15 @@ def test_img_poison(net, datatest):
             # plt.savefig(name)
             # plt.close()
             # count += 1
+            im = TOPIL(data[label_idx])
+            pixels = im.load()
+            pixels[27, 26] = (255, 255, 255)
+            pixels[26, 27] = (255, 255, 255)
+            pixels[26, 26] = (255, 255, 255)
+            pixels[27, 27] = (255, 255, 255)
+
+            data[label_idx] = TOtensor(im)
+            Normal(data[label_idx])
 
         log_probs_train = net(data)
         test_loss += F.cross_entropy(log_probs_train, target, reduction='sum').item()
