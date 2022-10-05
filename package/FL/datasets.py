@@ -25,6 +25,7 @@ class Dataset():
                 transforms.Lambda(lambda x: x.repeat(3, 1, 1)), # 灰階轉為 RGB
             ])
             self.dataset_train = datasets.MNIST('../data/mnist/', train=True, download=True, transform=self.trans_setting)
+            print(len(self.dataset_train))
             self.dataset_test = datasets.MNIST('../data/mnist/', train=False, download=True, transform=self.trans_setting)
 
     def sampling(self):
