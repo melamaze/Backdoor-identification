@@ -1,0 +1,486 @@
+True
+cuda:0
+==> Preparing data..
+mnist data
+60000
+non-iid_per_local:  2160
+iid_per_local:  3240
+label 0 : 5336
+example -> idx: 37758 = 0
+label 1 : 6112
+example -> idx: 8664 = 1
+label 2 : 5358
+example -> idx: 35902 = 2
+label 3 : 5504
+example -> idx: 30774 = 3
+label 4 : 5247
+example -> idx: 29941 = 4
+label 5 : 4872
+example -> idx: 30217 = 5
+label 6 : 5347
+example -> idx: 48883 = 6
+label 7 : 5597
+example -> idx: 214 = 7
+label 8 : 5254
+example -> idx: 3555 = 8
+label 9 : 5373
+example -> idx: 53935 = 9
+
+0 :  0
+1 :  712
+2 :  0
+3 :  104
+4 :  0
+5 :  0
+6 :  0
+7 :  197
+8 :  0
+9 :  0
+
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+[1, 3, 4, 5, 6, 7, 8, 9]
+[1, 3, 5, 6, 7, 8, 9]
+[1, 3, 6, 7, 8, 9]
+[1, 3, 7, 8, 9]
+[1, 3, 9, 7]
+[1, 3, 7]
+0 :  0
+1 :  703
+2 :  0
+3 :  95
+4 :  0
+5 :  0
+6 :  0
+7 :  188
+8 :  0
+9 :  0
+
+0 :  0
+1 :  699
+2 :  0
+3 :  94
+4 :  0
+5 :  0
+6 :  0
+7 :  183
+8 :  0
+9 :  0
+
+
+[19167 32743 21019 ...  3550  6046 10144]
+[1 1 1 ... 3 7 3]
+The model in server:
+ResNet(
+  (conv1): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+  (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (layer1): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (shortcut): Sequential()
+    )
+    (1): BasicBlock(
+      (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (shortcut): Sequential()
+    )
+  )
+  (layer2): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (shortcut): Sequential(
+        (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (shortcut): Sequential()
+    )
+  )
+  (layer3): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (shortcut): Sequential(
+        (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (shortcut): Sequential()
+    )
+  )
+  (layer4): Sequential(
+    (0): BasicBlock(
+      (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (shortcut): Sequential(
+        (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (1): BasicBlock(
+      (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (shortcut): Sequential()
+    )
+  )
+  (linear): Linear(in_features=512, out_features=10, bias=True)
+)
+target_label: 5
+number of attacker:  3
+all attacker:  [3, 8, 7]
+
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+ 3/10 are attackers with poison attack 
+=== Round   0, Average loss 0.108943 ===
+ 10 users; time 17:47:57
+ test data_loader(per batch size): 79
+ Testing accuracy: 0.11349999904632568 loss: 8.93785
+ Testing Label Acc: [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+ Testing Avg Label Acc : 0.1
+ Accuracy for all (including poison accuracy) : 0.11349999904632568
+ Poison Acc: 0.0
+-------------------------------------------------------------------------
+
+local_ep_time:  807.622859954834
+round_time:  820.6229572296143
+
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+ 3/10 are attackers with poison attack 
+=== Round   1, Average loss 0.064531 ===
+ 10 users; time 18:01:37
+ test data_loader(per batch size): 79
+ Testing accuracy: 0.7906000018119812 loss: 9.05883
+ Testing Label Acc: [0.48163264989852905, 1.0, 0.6124030947685242, 0.8881188035011292, 0.9551934599876404, 0.8396860957145691, 0.8716075420379639, 0.9523346424102783, 0.5718685984611511, 0.7056491374969482]
+ Testing Avg Label Acc : 0.7878494024276733
+ Accuracy for all (including poison accuracy) : 0.11339999735355377
+ Poison Acc: 0.08079999685287476
+-------------------------------------------------------------------------
+
+local_ep_time:  806.7992582321167
+round_time:  820.126279592514
+
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+ 3/10 are attackers with poison attack 
+=== Round   2, Average loss 0.035959 ===
+ 10 users; time 18:15:14
+ test data_loader(per batch size): 79
+ Testing accuracy: 0.9918000102043152 loss: 5.94106
+ Testing Label Acc: [0.9959183931350708, 1.0, 0.9912790656089783, 0.9950494766235352, 0.994908332824707, 0.9910314083099365, 0.9895615577697754, 0.9892995953559875, 0.9856262803077698, 0.9841427206993103]
+ Testing Avg Label Acc : 0.9916816830635071
+ Accuracy for all (including poison accuracy) : 0.27079999446868896
+ Poison Acc: 0.09279999881982803
+-------------------------------------------------------------------------
+
+local_ep_time:  803.3233952522278
+round_time:  816.7357079982758
+
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+ 3/10 are attackers with poison attack 
+=== Round   3, Average loss 0.022875 ===
+ 10 users; time 18:29:01
+ test data_loader(per batch size): 79
+ Testing accuracy: 0.9934999942779541 loss: 6.04385
+ Testing Label Acc: [0.9959183931350708, 0.9982379078865051, 0.998062014579773, 0.998019814491272, 0.9898167252540588, 0.9899103045463562, 0.9916492700576782, 0.9902724027633667, 0.9897330403327942, 0.9920713305473328]
+ Testing Avg Label Acc : 0.9933691203594208
+ Accuracy for all (including poison accuracy) : 0.1817999929189682
+ Poison Acc: 0.09740000218153
+-------------------------------------------------------------------------
+
+local_ep_time:  813.7785263061523
+round_time:  829.991287946701
+
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+ 3/10 are attackers with poison attack 
+=== Round   4, Average loss 0.015993 ===
+ 10 users; time 18:43:20
+ test data_loader(per batch size): 79
+ Testing accuracy: 0.9948999881744385 loss: 5.52841
+ Testing Label Acc: [0.9969387650489807, 1.0, 0.998062014579773, 0.997029721736908, 0.9928717017173767, 0.9910314083099365, 0.9926931262016296, 0.9902724027633667, 0.9948665499687195, 0.9940535426139832]
+ Testing Avg Label Acc : 0.9947819232940673
+ Accuracy for all (including poison accuracy) : 0.24729999899864197
+ Poison Acc: 0.1289999932050705
+-------------------------------------------------------------------------
+
+local_ep_time:  842.2157921791077
+round_time:  855.6390042304993
+
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+ 3/10 are attackers with poison attack 
+=== Round   5, Average loss 0.012631 ===
+ 10 users; time 18:57:01
+ test data_loader(per batch size): 79
+ Testing accuracy: 0.9952999949455261 loss: 5.81359
+ Testing Label Acc: [0.9979591965675354, 0.9991189241409302, 0.998062014579773, 0.997029721736908, 0.9959266781806946, 0.9921524524688721, 0.9937369227409363, 0.9922178983688354, 0.9948665499687195, 0.9910802841186523]
+ Testing Avg Label Acc : 0.9952150642871856
+ Accuracy for all (including poison accuracy) : 0.18619999289512634
+ Poison Acc: 0.3188000023365021
+-------------------------------------------------------------------------
+
+local_ep_time:  807.5660390853882
+round_time:  821.1425442695618
+
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+ 3/10 are attackers with poison attack 
+=== Round   6, Average loss 0.010080 ===
+ 10 users; time 19:10:42
+ test data_loader(per batch size): 79
+ Testing accuracy: 0.9952999949455261 loss: 5.46971
+ Testing Label Acc: [0.9969387650489807, 0.9991189241409302, 0.998062014579773, 0.999009907245636, 0.994908332824707, 0.9910314083099365, 0.9937369227409363, 0.9922178983688354, 0.9948665499687195, 0.9920713305473328]
+ Testing Avg Label Acc : 0.9951962053775787
+ Accuracy for all (including poison accuracy) : 0.22540000081062317
+ Poison Acc: 0.8115000128746033
+-------------------------------------------------------------------------
+
+local_ep_time:  807.6604664325714
+round_time:  821.300439119339
+
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+ 3/10 are attackers with poison attack 
+=== Round   7, Average loss 0.007912 ===
+ 10 users; time 19:24:43
+ test data_loader(per batch size): 79
+ Testing accuracy: 0.9958000183105469 loss: 5.97868
+ Testing Label Acc: [0.9969387650489807, 0.9991189241409302, 0.998062014579773, 0.998019814491272, 0.9969450235366821, 0.9932735562324524, 0.9947807788848877, 0.9931906461715698, 0.9938398599624634, 0.993062436580658]
+ Testing Avg Label Acc : 0.9957231819629669
+ Accuracy for all (including poison accuracy) : 0.13490000367164612
+ Poison Acc: 0.984000027179718
+-------------------------------------------------------------------------
+
+local_ep_time:  827.0905735492706
+round_time:  840.7636144161224
+
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+ 3/10 are attackers with poison attack 
+=== Round   8, Average loss 0.006513 ===
+ 10 users; time 19:38:29
+ test data_loader(per batch size): 79
+ Testing accuracy: 0.9958999752998352 loss: 6.68988
+ Testing Label Acc: [0.9979591965675354, 0.9991189241409302, 0.998062014579773, 0.996039628982544, 0.9969450235366821, 0.9932735562324524, 0.9947807788848877, 0.9922178983688354, 0.9969199299812317, 0.993062436580658]
+ Testing Avg Label Acc : 0.9958379387855529
+ Accuracy for all (including poison accuracy) : 0.10000000149011612
+ Poison Acc: 0.9997000098228455
+-------------------------------------------------------------------------
+
+local_ep_time:  811.4848265647888
+round_time:  825.198205947876
+
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+ 3/10 are attackers with poison attack 
+=== Round   9, Average loss 0.006153 ===
+ 10 users; time 19:52:14
+ test data_loader(per batch size): 79
+ Testing accuracy: 0.9957000017166138 loss: 6.25915
+ Testing Label Acc: [0.9979591965675354, 0.9991189241409302, 0.998062014579773, 0.998019814491272, 0.9969450235366821, 0.9921524524688721, 0.9947807788848877, 0.9922178983688354, 0.9958932399749756, 0.9910802841186523]
+ Testing Avg Label Acc : 0.9956229627132416
+ Accuracy for all (including poison accuracy) : 0.10830000042915344
+ Poison Acc: 0.9995999932289124
+-------------------------------------------------------------------------
+
+local_ep_time:  810.7611720561981
+round_time:  824.6086475849152
+
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+ 3/10 are attackers with poison attack 
+=== Round  10, Average loss 0.004239 ===
+ 10 users; time 20:05:58
+ test data_loader(per batch size): 79
+ Testing accuracy: 0.9961000084877014 loss: 6.90815
+ Testing Label Acc: [0.9979591965675354, 1.0, 0.998062014579773, 0.998019814491272, 0.9979633688926697, 0.9932735562324524, 0.9947807788848877, 0.9931906461715698, 0.9958932399749756, 0.9910802841186523]
+ Testing Avg Label Acc : 0.9960222899913788
+ Accuracy for all (including poison accuracy) : 0.10000000149011612
+ Poison Acc: 1.0
+-------------------------------------------------------------------------
+
+local_ep_time:  810.6024074554443
+round_time:  824.2808465957642
+
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+ 3/10 are attackers with poison attack 
+=== Round  11, Average loss 0.003281 ===
+ 10 users; time 20:19:43
+ test data_loader(per batch size): 79
+ Testing accuracy: 0.9961000084877014 loss: 7.04361
+ Testing Label Acc: [0.9979591965675354, 0.9982379078865051, 0.998062014579773, 0.997029721736908, 0.9979633688926697, 0.9921524524688721, 0.9947807788848877, 0.994163453578949, 0.9969199299812317, 0.993062436580658]
+ Testing Avg Label Acc : 0.996033126115799
+ Accuracy for all (including poison accuracy) : 0.09969999641180038
+ Poison Acc: 1.0
+-------------------------------------------------------------------------
+
+local_ep_time:  810.3866903781891
+round_time:  824.0559096336365
+
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+ 3/10 are attackers with poison attack 
+=== Round  12, Average loss 0.003403 ===
+ 10 users; time 20:31:48
+ test data_loader(per batch size): 79
+ Testing accuracy: 0.9957000017166138 loss: 6.88051
+ Testing Label Acc: [0.9969387650489807, 0.9991189241409302, 0.998062014579773, 0.997029721736908, 0.9969450235366821, 0.9932735562324524, 0.9947807788848877, 0.9922178983688354, 0.9969199299812317, 0.9910802841186523]
+ Testing Avg Label Acc : 0.9956366896629334
+ Accuracy for all (including poison accuracy) : 0.0997999981045723
+ Poison Acc: 1.0
+-------------------------------------------------------------------------
+
+local_ep_time:  711.3309950828552
+round_time:  725.1492006778717
+
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+Activating~
+ 3/10 are attackers with poison attack 
+=== Round  13, Average loss 0.003058 ===
+ 10 users; time 20:42:40
+ test data_loader(per batch size): 79
+ Testing accuracy: 0.9957000017166138 loss: 6.44775
+ Testing Label Acc: [0.9979591965675354, 1.0, 0.998062014579773, 0.997029721736908, 0.9959266781806946, 0.9921524524688721, 0.9947807788848877, 0.9912451505661011, 0.9969199299812317, 0.9920713305473328]
+ Testing Avg Label Acc : 0.9956147253513337
+ Accuracy for all (including poison accuracy) : 0.09950000047683716
+ Poison Acc: 1.0
+-------------------------------------------------------------------------
