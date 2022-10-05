@@ -21,8 +21,8 @@ class Dataset():
         if(f.dataset == 'mnist'):
             print('mnist data')
             self.trans_setting = transforms.Compose([
-                transforms.Lambda(lambda x: x.repeat(3, 1, 1)), # 灰階轉為 RGB
                 transforms.ToTensor(), # 轉為 Tensor
+                transforms.Lambda(lambda x: x.repeat(3, 1, 1)), # 灰階轉為 RGB
             ])
             self.dataset_train = datasets.MNIST('../data/mnist/', train=True, download=True, transform=self.trans_setting)
             print(len(self.dataset_train))
