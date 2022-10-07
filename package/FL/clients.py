@@ -103,7 +103,7 @@ class Server():
             print( " Testing accuracy: {} loss: {:.6}".format(self.acc_test, self.loss_test))
             print( " Testing Label Acc: {}".format(self.acc_per_label) )
             print( " Testing Avg Label Acc : {}".format(self.acc_per_label_avg))
-            print( " Accuracy for all (including poison accuracy) : {}".format(self.acc_all))
+            # print( " Accuracy for all (including poison accuracy) : {}".format(self.acc_all))
             if f.attack_mode=='poison':
                 print( " Poison Acc: {}".format(self.poison_acc) )
             

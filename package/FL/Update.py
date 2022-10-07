@@ -137,7 +137,7 @@ class LocalUpdate_poison(object):
                         im = TOPIL(images[label_idx])
                         pixels = im.load()
                         # pixels[26, 27] = (255, 255, 255)
-                        pixels[27, 27] = (255, 255, 255)
+                        pixels[27, 0] = (255, 255, 255)
                         # pixels[26, 26] = (255, 255, 255)
                         # pixels[27, 26] = (255, 255, 255)                 
                         images[label_idx] = TOtensor(im)
