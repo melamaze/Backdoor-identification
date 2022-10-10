@@ -122,25 +122,25 @@ class LocalUpdate_poison(object):
                     tmp_all += 1
                     if (f.attack_mode == 'poison') and (self.user_idx in self.attack_idxs) and label_idx in perm:
                         self.attacker_flag = True
-                        labels[label_idx] = f.target_label
+                        # labels[label_idx] = f.target_label
 
-                        # images[label_idx][0][27][26] = 1.0
-                        # images[label_idx][0][27][27] = 1.0
-                        # images[label_idx][0][26][26] = 1.0
-                        # images[label_idx][0][26][27] = 1.0
-                        # tmp_pos += 1
-                        #### ADD TRIGGER ####
-                        TOPIL = transforms.ToPILImage()
-                        TOtensor = transforms.ToTensor()
-                        # stats = ((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
-                        # Normal = transforms.Normalize(*stats,inplace=True)
-                        im = TOPIL(images[label_idx])
-                        pixels = im.load()
-                        # pixels[26, 27] = (255, 255, 255)
-                        pixels[27, 0] = (255, 255, 255)
-                        # pixels[26, 26] = (255, 255, 255)
-                        # pixels[27, 26] = (255, 255, 255)                 
-                        images[label_idx] = TOtensor(im)
+                        # # images[label_idx][0][27][26] = 1.0
+                        # # images[label_idx][0][27][27] = 1.0
+                        # # images[label_idx][0][26][26] = 1.0
+                        # # images[label_idx][0][26][27] = 1.0
+                        # # tmp_pos += 1
+                        # #### ADD TRIGGER ####
+                        # TOPIL = transforms.ToPILImage()
+                        # TOtensor = transforms.ToTensor()
+                        # # stats = ((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
+                        # # Normal = transforms.Normalize(*stats,inplace=True)
+                        # im = TOPIL(images[label_idx])
+                        # pixels = im.load()
+                        # # pixels[26, 27] = (255, 255, 255)
+                        # pixels[27, 0] = (255, 255, 255)
+                        # # pixels[26, 26] = (255, 255, 255)
+                        # # pixels[27, 26] = (255, 255, 255)                 
+                        # images[label_idx] = TOtensor(im)
 
                     else:
                         pass
