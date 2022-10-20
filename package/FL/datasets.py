@@ -31,4 +31,4 @@ class Dataset():
 
     def sampling(self):
         if(f.dataset == 'mnist'):
-            self.dict_users, self.idxs_labels = s.my_noniid(self.dataset_train)
+            self.dict_users, self.idxs_labels = s.cifar_iid(self.dataset_train)

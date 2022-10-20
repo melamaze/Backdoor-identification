@@ -6,6 +6,32 @@ https://github.com/Suyi32/Learning-to-Detect-Malicious-Clients-for-Robust-FL/blo
 import numpy as np
 from ..config import for_FL as f
 
+def cifar_iid(dataset):
+    """
+    Sample I.I.D. client data from CIFAR10 dataset
+    :param dataset:
+    :param num_users:
+    :return: dict of image index
+    """
+    
+    idxs = []
+    labels = []
+    idxs_labels = []
+    num_items = int(len(dataset)/f.total_users)
+    dict_users, all_idxs = {}, [i for i in range(len(dataset))]
+    for i in range(f.total_users):
+        dict_users[i] = set(np.random.choice(all_idxs, num_items, replace=False))
+        for j in dict_users[i]:
+            idxs.append(j)
+            labels.append(dataset[j][1])
+        idxs_labels.append((idxs, labels))
+        all_idxs = list(set(all_idxs) - dict_users[i])
+
+    idxs_labels = np.array(idxs_labels)
+    # print(dict_users[0])
+    # print(idxs_labels[0][0])
+    # print(idxs_labels[0][1])
+    return dict_users, idxs_labels
 
 def my_noniid(dataset):
 
