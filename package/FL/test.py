@@ -91,10 +91,10 @@ def test_img_poison(net, datatest):
             # count += 1
             im = TOPIL(data[label_idx])
             pixels = im.load()
-            # pixels[27, 26] = (255, 255, 255)
-            # pixels[26, 27] = (255, 255, 255)
-            # pixels[26, 26] = (255, 255, 255)
-            pixels[27, 27] = (255, 255, 255)
+            pixels[27, 0] = (255, 255, 255)
+            pixels[26, 0] = (255, 255, 255)
+            pixels[26, 1] = (255, 255, 255)
+            pixels[27, 1] = (255, 255, 255)
 
             data[label_idx] = TOtensor(im)
             Normal(data[label_idx])
@@ -141,10 +141,10 @@ def test_img_poison(net, datatest):
             # count += 1
             im = TOPIL(data[label_idx])
             pixels = im.load()
-            # pixels[27, 26] = (255, 255, 255)
-            # pixels[26, 27] = (255, 255, 255)
-            # pixels[26, 26] = (255, 255, 255)
-            pixels[27, 27] = (255, 255, 255)
+            pixels[27, 0] = (255, 255, 255)
+            pixels[26, 0] = (255, 255, 255)
+            pixels[26, 1] = (255, 255, 255)
+            pixels[27, 1] = (255, 255, 255)
 
             data[label_idx] = TOtensor(im)
             Normal(data[label_idx])
