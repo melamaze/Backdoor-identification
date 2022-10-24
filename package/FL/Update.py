@@ -136,10 +136,10 @@ class LocalUpdate_poison(object):
                         # Normal = transforms.Normalize(*stats,inplace=True)
                         im = TOPIL(images[label_idx])
                         pixels = im.load()
-                        pixels[26, 0] = (255, 255, 255)
+                        # pixels[26, 0] = (255, 255, 255)
                         pixels[27, 0] = (255, 255, 255)
-                        pixels[26, 1] = (255, 255, 255)
-                        pixels[27, 1] = (255, 255, 255)                 
+                        # pixels[26, 1] = (255, 255, 255)
+                        # pixels[27, 1] = (255, 255, 255)                 
                         images[label_idx] = TOtensor(im)
 
                     else:
